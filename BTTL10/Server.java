@@ -14,6 +14,7 @@ public class Server {
     private int port;
     public static ArrayList<Socket> listSK;
     public static List<String> userList = new ArrayList<String>();
+    public String chatLog = "";
     public Server(int port) {
         this.port = port;
     }
@@ -76,18 +77,32 @@ public class Server {
                         shouldWeSendWelcome=1;
                         userList.add(thisUser);
                     }
-                    System.out.println("new"+shouldWeSendWelcome);
+                    //System.out.println("new"+shouldWeSendWelcome);
                     //server gui tra
                     DataOutputStream dos = null;
                     try {
+                        String headLog = "<html>";
+                        String tailLog="</html>";
+                        if(shouldWeSendWelcome==1){
+                            chatLog = chatLog+getUsername(sms)+" has joined"+"<br />";
+                        }else{
+                            chatLog = chatLog+sms+"<br />";
+                        }
                         for (Socket item : Server.listSK) {
                             dos = new DataOutputStream(item.getOutputStream());
-                            System.out.println(shouldWeSendWelcome);
-                            if(shouldWeSendWelcome==1){
-                                dos.writeUTF(getUsername(sms)+" has joined");
-                            }else{
-                                dos.writeUTF(sms);
-                            }
+                            System.out.println(chatLog);
+                            dos.writeUTF(headLog+chatLog+tailLog);
+                            //System.out.println(shouldWeSendWelcome);
+                            //chatLog = chatLog+sms+"<br />";
+//                            if(shouldWeSendWelcome==1){
+//                                chatLog = chatLog+getUsername(sms)+" has joined"+"<br />";
+//                                System.out.println(chatLog);
+//                                dos.writeUTF(headLog+chatLog+tailLog);
+//                            }else{
+//                                chatLog = chatLog+sms+"<br />";
+//                                System.out.println(chatLog);
+//                                dos.writeUTF(headLog+chatLog+tailLog);
+//                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

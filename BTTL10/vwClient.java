@@ -26,6 +26,7 @@ public class vwClient extends JFrame implements ActionListener {
     Socket client = null;
     String iAmGhost = null;
     String chatLog="";
+    int changePortToName=0;
     public vwClient(){
         add(CreateUI());
         setSize(500, 400);
@@ -48,7 +49,7 @@ public class vwClient extends JFrame implements ActionListener {
     }
     public JFrame CreateChatWindow(){
         //Chat window
-        JFrame newFrame = new JFrame("Chatting application");
+        JFrame newFrame = new JFrame(Integer.toString(changePortToName));
         newFrame.setSize(450, 474);
         newFrame.setLayout(new BorderLayout());
         newFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -111,6 +112,7 @@ public class vwClient extends JFrame implements ActionListener {
         public Client(InetAddress host, int port) {
             this.host = host;
             this.port = port;
+            changePortToName = port;
         }
 
         public void execute(String name) throws IOException  {
@@ -144,10 +146,8 @@ public class vwClient extends JFrame implements ActionListener {
                 while(true) {
                     String sms = dis.readUTF();
                     System.out.println(sms);
-                    String headLog = "<html>";
-                    String tailLog="</html>";
-                    chatLog = chatLog+sms+"<br />";
-                    showChatLabel.setText(headLog+chatLog+tailLog);
+
+                    showChatLabel.setText(sms);
                 }
             } catch (Exception e) {
                 try {
