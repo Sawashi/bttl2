@@ -6,16 +6,21 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Server {
+
     private int port;
     public static ArrayList<Socket> listSK;
-    public static ArrayList<String> usernames;
+    public static List<String> userList = new ArrayList<String>();
     public Server(int port) {
         this.port = port;
     }
-
+    public String getUsername(String strIn){
+        String nS[]=strIn.split(":", 2);
+        return nS[0];
+    }
     private void execute() throws IOException {
         ServerSocket server = new ServerSocket(port);
         WriteServer write = new WriteServer();
@@ -63,12 +68,24 @@ public class Server {
                         }
                     }
                     System.out.println(sms);
-
+                    String thisUser = getUsername(sms);
+                    int shouldWeSendWelcome=0;
+                    if(userList.contains(thisUser)){
+                        shouldWeSendWelcome=1;
+                    }
+                    if(shouldWeSendWelcome==1){
+                       userList.add(thisUser);
+                    }
+                    System.out.println("new"+shouldWeSendWelcome);
                     //server gui tra
                     DataOutputStream dos = null;
                     try {
                         for (Socket item : Server.listSK) {
                             dos = new DataOutputStream(item.getOutputStream());
+                            System.out.println(shouldWeSendWelcome);
+                            if(shouldWeSendWelcome==0){
+                                dos.writeUTF(getUsername(sms)+"has joined");
+                            }
                             dos.writeUTF(sms);
                         }
                     } catch (IOException e) {
