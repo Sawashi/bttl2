@@ -72,6 +72,10 @@ public class vwClient extends JFrame implements ActionListener {
                     dos = new DataOutputStream(client.getOutputStream());
                     String sms =enterMessageTextField.getText();
                     dos.writeUTF(iAmGhost + ": " + sms);
+                    if(sms.contains("exit")){
+                        System.out.println("ok");
+                        newFrame.dispose();
+                    }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
