@@ -71,10 +71,10 @@ public class Server {
                     String thisUser = getUsername(sms);
                     int shouldWeSendWelcome=0;
                     if(userList.contains(thisUser)){
+                        shouldWeSendWelcome=0;
+                    }else{
                         shouldWeSendWelcome=1;
-                    }
-                    if(shouldWeSendWelcome==1){
-                       userList.add(thisUser);
+                        userList.add(thisUser);
                     }
                     System.out.println("new"+shouldWeSendWelcome);
                     //server gui tra
@@ -83,10 +83,11 @@ public class Server {
                         for (Socket item : Server.listSK) {
                             dos = new DataOutputStream(item.getOutputStream());
                             System.out.println(shouldWeSendWelcome);
-                            if(shouldWeSendWelcome==0){
-                                dos.writeUTF(getUsername(sms)+"has joined");
+                            if(shouldWeSendWelcome==1){
+                                dos.writeUTF(getUsername(sms)+" has joined");
+                            }else{
+                                dos.writeUTF(sms);
                             }
-                            dos.writeUTF(sms);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -81,8 +81,17 @@ public class vwClient extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == enter){
             try {
-                Client client = new Client(InetAddress.getLocalHost(), 15797);
-                client.execute(nText.getText());
+                Client clientI = new Client(InetAddress.getLocalHost(), 15797);
+                clientI.execute(nText.getText());
+                //send dummy to get join
+                DataOutputStream dos = null;
+                try {
+                    dos = new DataOutputStream(client.getOutputStream());
+                    String sms ="";
+                    dos.writeUTF(iAmGhost + ": " + sms);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             } catch (UnknownHostException ex) {
                 throw new RuntimeException(ex);
             } catch (IOException ex) {
