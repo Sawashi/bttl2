@@ -52,15 +52,19 @@ public class Server {
         @Override
         public void run() {
             try {
+                String userLeft="";
+                int isLeft=0;
                 DataInputStream dis = new DataInputStream(socket.getInputStream());
                 while (true) {
                     String sms = dis.readUTF();
                     if(sms.contains("exit")) {
+                        isLeft=1;
+                        userLeft=getUsername(sms);
                         Server.listSK.remove(socket);
-                        System.out.println("Đã ngắt kết nối với " + socket);
+                        System.out.println("Disconnected with socket: " + socket);
                         dis.close();
                         socket.close();
-                        continue; //Ngắt kết nối rồi
+                        //continue; //Ngắt kết nối rồi
                     }
                     for (Socket item : Server.listSK) {
                         if(item.getPort() != socket.getPort()) {
@@ -86,23 +90,19 @@ public class Server {
                         if(shouldWeSendWelcome==1){
                             chatLog = chatLog+getUsername(sms)+" has joined"+"<br />";
                         }else{
-                            chatLog = chatLog+sms+"<br />";
+                            if(isLeft==1){
+                                chatLog = chatLog+userLeft+" is left"+"<br />";
+                                //System.out.println("ok left"+chatLog);
+                                isLeft=0;
+                                userList.remove(userLeft);
+                            }else{
+                                chatLog = chatLog+sms+"<br />";
+                            }
                         }
                         for (Socket item : Server.listSK) {
                             dos = new DataOutputStream(item.getOutputStream());
                             System.out.println(chatLog);
                             dos.writeUTF(headLog+chatLog+tailLog);
-                            //System.out.println(shouldWeSendWelcome);
-                            //chatLog = chatLog+sms+"<br />";
-//                            if(shouldWeSendWelcome==1){
-//                                chatLog = chatLog+getUsername(sms)+" has joined"+"<br />";
-//                                System.out.println(chatLog);
-//                                dos.writeUTF(headLog+chatLog+tailLog);
-//                            }else{
-//                                chatLog = chatLog+sms+"<br />";
-//                                System.out.println(chatLog);
-//                                dos.writeUTF(headLog+chatLog+tailLog);
-//                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

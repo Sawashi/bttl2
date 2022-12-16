@@ -21,7 +21,7 @@ public class vwClient extends JFrame implements ActionListener {
     private  JLabel  title;
     private JButton enter;
     private JTextField nText;
-    static JLabel showChatLabel = new JLabel("");
+    static JLabel showChatLabel = new JLabel("", SwingConstants.LEFT);
 //    private Client client = null;
     Socket client = null;
     String iAmGhost = null;
@@ -61,7 +61,7 @@ public class vwClient extends JFrame implements ActionListener {
         JButton sendMessageButton = new JButton("Send");
         enterMessageField.add(enterMessageTextField);
         enterMessageField.add(sendMessageButton);
-        newFrame.add(showChatField, BorderLayout.CENTER);
+        newFrame.add(showChatField, BorderLayout.WEST);
         newFrame.add(enterMessageField, BorderLayout.SOUTH);
         newFrame.setVisible(true);
         sendMessageButton.addActionListener(new ActionListener() {
@@ -117,12 +117,6 @@ public class vwClient extends JFrame implements ActionListener {
 
         public void execute(String name) throws IOException  {
             //Phần bổ sung
-
-//        Scanner sc = new Scanner(System.in);
-//        System.out.print("Nhập vào tên của bạn: ");
-//
-//        String name = sc.nextLine();
-
             client = new Socket(host, port);
             ReadClient read = new ReadClient(client);
             read.start();
@@ -193,50 +187,3 @@ public class vwClient extends JFrame implements ActionListener {
 
     }
 }
-
-
-//class chatting extends JFrame implements ActionListener {
-//    private JPanel panel;
-//    private  JLabel  title;
-//    private JButton send;
-//    private JTextField nText;
-//
-//    public chatting(){
-//        add(CreateUI());
-//        setSize(500, 400);
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setVisible(true);
-//    }
-//    public JPanel CreateUI(){
-//        panel = new JPanel(new BorderLayout());
-//
-//        JPanel p = new JPanel(new GridLayout(1,3));
-//        title = new JLabel("Enter your name");
-//        nText = new JTextField(20);
-//        send = new JButton("Send");
-//        send.addActionListener(this);
-//        p.add(title);
-//        p.add(nText);
-//        p.add(send);
-//        panel.add(p, BorderLayout.NORTH);
-//        return panel;
-//    }
-//    public void actionPerformed(ActionEvent e){
-//        if(e.getSource() == send){
-//
-//            try {
-//                Client client = new Client(InetAddress.getLocalHost(), 15797);
-//                client.execute(nText.getText());
-//            } catch (UnknownHostException ex) {
-//                throw new RuntimeException(ex);
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-//            this.dispose();
-//
-//        }
-//    }
-//    public static void main(String[] agrs){
-//        chatting vv = new chatting();
-//    }
-//}
